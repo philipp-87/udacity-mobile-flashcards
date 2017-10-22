@@ -31,7 +31,9 @@ class DeckView extends Component {
                     <TouchableOpacity
                         style={styles.startQuizButton}
                         onPress={() =>
-                            this.props.navigation.navigate("QuizView")}
+                            this.props.navigation.navigate("QuizView", {
+                                deck: deck
+                            })}
                     >
                         <Text style={{ color: white }}>START QUIZ</Text>
                     </TouchableOpacity>
@@ -71,6 +73,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 7,
         height: 45,
+        width: 200,
         alignItems: "center",
         justifyContent: "center"
     },
@@ -79,6 +82,7 @@ const styles = StyleSheet.create({
         padding: 10,
         borderRadius: 7,
         height: 45,
+        width: 200,
         marginTop: 20,
         alignItems: "center",
         justifyContent: "center"
