@@ -6,7 +6,8 @@ import {
     TouchableOpacity,
     FlatList
 } from "react-native";
-import { gray } from "../utils/colors";
+import { Entypo } from "@expo/vector-icons";
+import { gray, purple, orange, white } from "../utils/colors";
 
 const data = [
     {
@@ -67,8 +68,14 @@ class DeckListView extends Component {
                 onPress={() =>
                     this.props.navigation.navigate("DeckView", { deck: item })}
             >
-                <Text style={{ fontSize: 30 }}>{item.title}</Text>
-                <Text>23 cards</Text>
+                <View style={styles.iconWrapper} />
+                <View style={styles.textWrapper}>
+                    <Text style={{ fontSize: 30 }}>{item.title}</Text>
+                    <Text>23 cards</Text>
+                </View>
+                <View style={styles.iconWrapper}>
+                    <Entypo name="chevron-small-right" size={30} />
+                </View>
             </TouchableOpacity>
         );
     }
@@ -90,7 +97,19 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center",
         borderColor: gray,
-        borderBottomWidth: 1
+        borderBottomWidth: 1,
+        flexDirection: "row"
+    },
+    textWrapper: {
+        flex: 2,
+        alignItems: "center",
+        justifyContent: "center"
+    },
+    iconWrapper: {
+        flex: 1,
+        alignItems: "flex-end",
+        justifyContent: "flex-end",
+        marginRight: 10
     }
 });
 
