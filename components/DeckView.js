@@ -21,10 +21,18 @@ class DeckView extends Component {
                     <Text style={{ fontSize: 20 }}>23 cards</Text>
                 </View>
                 <View style={styles.buttonWrapper}>
-                    <TouchableOpacity style={styles.addCardButton}>
+                    <TouchableOpacity
+                        style={styles.addCardButton}
+                        onPress={() =>
+                            this.props.navigation.navigate("NewQuestionView")}
+                    >
                         <Text style={{ color: white }}>ADD CARD</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={styles.startQuizButton}>
+                    <TouchableOpacity
+                        style={styles.startQuizButton}
+                        onPress={() =>
+                            this.props.navigation.navigate("QuizView")}
+                    >
                         <Text style={{ color: white }}>START QUIZ</Text>
                     </TouchableOpacity>
                 </View>
@@ -62,14 +70,18 @@ const styles = StyleSheet.create({
         backgroundColor: purple,
         padding: 10,
         borderRadius: 7,
-        height: 45
+        height: 45,
+        alignItems: "center",
+        justifyContent: "center"
     },
     startQuizButton: {
         backgroundColor: orange,
         padding: 10,
         borderRadius: 7,
         height: 45,
-        marginTop: 20
+        marginTop: 20,
+        alignItems: "center",
+        justifyContent: "center"
     }
 });
 
