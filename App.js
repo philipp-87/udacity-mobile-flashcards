@@ -1,6 +1,6 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { createStore } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import { Provider } from "react-redux";
 import reducer from "./reducers";
 import { TabNavigator, StackNavigator } from "react-navigation";
@@ -10,11 +10,17 @@ import DeckView from "./components/DeckView";
 import NewDeckView from "./components/NewDeckView";
 import NewQuestionView from "./components/NewQuestionView";
 import QuizView from "./components/QuizView";
+import logger from "redux-logger";
+import { composeWithDevTools } from "redux-devtools-extension";
+import promise from "redux-promise-middleware";
+
+const middleware = applyMiddleware(promise(), logger);
+const store = createStore(reducer, composeWithDevTools(middleware));
 
 export default class App extends React.Component {
     render() {
         return (
-            <Provider store={createStore(reducer)}>
+            <Provider store={store}>
                 <View style={{ flex: 1 }}>
                     <MainNavigator />
                 </View>
