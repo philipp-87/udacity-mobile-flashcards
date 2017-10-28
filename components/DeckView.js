@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { gray, purple, orange, white } from "../utils/colors";
+import _ from "lodash";
 
 class DeckView extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -13,12 +14,15 @@ class DeckView extends Component {
 
     render() {
         let deck = this.props.navigation.state.params.deck;
+        const deckSize = _.isEmpty(deck.questions)
+            ? "0"
+            : deck.questions.length;
 
         return (
             <View style={styles.container}>
                 <View style={styles.cardWrapper}>
                     <Text style={{ fontSize: 40 }}>{deck.title}</Text>
-                    <Text style={{ fontSize: 20 }}>23 cards</Text>
+                    <Text style={{ fontSize: 20 }}>{deckSize} cards</Text>
                 </View>
                 <View style={styles.buttonWrapper}>
                     <TouchableOpacity

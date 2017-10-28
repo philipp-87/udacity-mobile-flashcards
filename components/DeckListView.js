@@ -4,10 +4,14 @@ import {
     Text,
     View,
     TouchableOpacity,
-    FlatList
+    FlatList,
+    ScrollView
 } from "react-native";
+import { connect } from "react-redux";
 import { Entypo } from "@expo/vector-icons";
+import _ from "lodash";
 import { gray, purple, orange, white } from "../utils/colors";
+import { getDecks } from "../utils/api";
 
 const data = [
     {
@@ -61,7 +65,18 @@ const data = [
 ];
 
 class DeckListView extends Component {
+    state = {
+        decks: null
+    };
+
+    componentDidMount() {
+        this.setState({
+            decks: getDecks()
+        });
+    }
+
     renderItem(item) {
+        console.log(item);
         return (
             <TouchableOpacity
                 style={styles.itemContainer}
@@ -81,17 +96,62 @@ class DeckListView extends Component {
     }
 
     render() {
+        console.log(Object.keys(this.props.decks));
+        console.log(this.props.decks);
+        const { decks } = this.props;
         return (
-            <FlatList
-                data={data}
-                renderItem={({ item }) => this.renderItem(item)}
-            />
+            <View style={styles.container}>
+                <ScrollView>
+                    {_.map(decks, (deck, index) => {
+                        const deckSize = _.isEmpty(deck.questions)
+                            ? "0"
+                            : deck.questions.length;
+
+                        return (
+                            <TouchableOpacity
+                                key={index}
+                                style={styles.itemContainer}
+                                onPress={() =>
+                                    this.props.navigation.navigate("DeckView", {
+                                        deck: deck
+                                    })}
+                            >
+                                <View style={styles.iconWrapper} />
+                                <View style={styles.textWrapper}>
+                                    <Text style={{ fontSize: 30 }}>
+                                        {deck.title}
+                                    </Text>
+                                    <Text>{deckSize} cards</Text>
+                                </View>
+                                <View style={styles.iconWrapper}>
+                                    <Entypo
+                                        name="chevron-small-right"
+                                        size={30}
+                                    />
+                                </View>
+                            </TouchableOpacity>
+                        );
+                    })}
+                </ScrollView>
+            </View>
         );
     }
 }
 
+function mapStateToProps(state) {
+    console.log(state);
+    return {
+        decks: state
+    };
+}
+
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: "#fff"
+    },
     itemContainer: {
+        flex: 1,
         height: 100,
         backgroundColor: "#fff",
         alignItems: "center",
@@ -113,4 +173,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default DeckListView;
+export default connect(mapStateToProps)(DeckListView);

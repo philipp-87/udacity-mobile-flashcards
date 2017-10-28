@@ -1,5 +1,8 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
+import { createStore } from "redux";
+import { Provider } from "react-redux";
+import reducer from "./reducers";
 import { TabNavigator, StackNavigator } from "react-navigation";
 import { FontAwesome, Ionicons } from "@expo/vector-icons";
 import DeckListView from "./components/DeckListView";
@@ -11,9 +14,11 @@ import QuizView from "./components/QuizView";
 export default class App extends React.Component {
     render() {
         return (
-            <View style={styles.container}>
-                <MainNavigator />
-            </View>
+            <Provider store={createStore(reducer)}>
+                <View style={{ flex: 1 }}>
+                    <MainNavigator />
+                </View>
+            </Provider>
         );
     }
 }

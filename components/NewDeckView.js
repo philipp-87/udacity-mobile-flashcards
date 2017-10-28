@@ -4,25 +4,33 @@ import {
     Text,
     View,
     TextInput,
-    TouchableOpacity
+    TouchableOpacity,
+    KeyboardAvoidingView
 } from "react-native";
 import { gray, purple, orange, white } from "../utils/colors";
+import { connect } from "react-redux";
+import { saveDeckTitle } from "../utils/api";
+import { addDeck } from "../actions";
 
 class NewDeckView extends Component {
     state = {
-        text: null
+        title: null
     };
 
+    submit() {
+        const { addDeck } = this.props;
+        addDeck(this.state.title);
+        this.setState({
+            title: null
+        });
+        this.props.navigation.goBack();
+    }
+
     render() {
-        let item = {
-            key: "DeckNew",
-            title: "Deck New",
-            question: "QuestionNew",
-            answer: "AnswerNew"
-        };
+        const { addDeck } = this.props;
 
         return (
-            <View style={styles.container}>
+            <KeyboardAvoidingView behavior="padding" style={styles.container}>
                 <Text style={{ fontSize: 20 }}>
                     Please enter a title for your new deck
                 </Text>
@@ -35,22 +43,30 @@ class NewDeckView extends Component {
                         padding: 5,
                         marginTop: 20
                     }}
-                    onChangeText={text => this.setState({ text })}
-                    value={this.state.text}
+                    onChangeText={value => this.setState({ title: value })}
+                    value={this.state.title}
                     placeholder={"e.g. React Native"}
+                    autoFocus={true}
                 />
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={() =>
-                        this.props.navigation.navigate("DeckView", {
-                            deck: item
-                        })}
+                    onPress={() => this.submit()}
                 >
                     <Text style={{ color: white }}>SUBMIT</Text>
                 </TouchableOpacity>
-            </View>
+            </KeyboardAvoidingView>
         );
     }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        addDeck: data => dispatch(addDeck(data))
+    };
+}
+
+function mapStateToProps(state) {
+    return {};
 }
 
 const styles = StyleSheet.create({
@@ -72,4 +88,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default NewDeckView;
+export default connect(mapStateToProps, mapDispatchToProps)(NewDeckView);
