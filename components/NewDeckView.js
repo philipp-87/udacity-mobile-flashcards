@@ -11,6 +11,7 @@ import { gray, purple, orange, white } from "../utils/colors";
 import { connect } from "react-redux";
 import { saveDeckTitle } from "../utils/api";
 import { addDeck } from "../actions";
+const uuid = require("uuid/v4");
 
 class NewDeckView extends Component {
     state = {
@@ -19,7 +20,11 @@ class NewDeckView extends Component {
 
     submit() {
         const { addDeck } = this.props;
-        addDeck(this.state.title);
+        addDeck({
+            id: uuid(),
+            title: this.state.title,
+            questions: []
+        });
         this.setState({
             title: null
         });

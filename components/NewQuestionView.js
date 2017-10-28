@@ -7,6 +7,8 @@ import {
     TouchableOpacity
 } from "react-native";
 import { gray, purple, orange, white } from "../utils/colors";
+import { connect } from "react-redux";
+import { addCard } from "../actions";
 
 class NewQuestionView extends Component {
     state = {
@@ -14,13 +16,21 @@ class NewQuestionView extends Component {
         answerText: null
     };
 
+    submit() {
+        let deck = this.props.navigation.state.params.deck;
+        const { addCard } = this.props;
+        addCard(
+            {
+                question: this.state.questionText,
+                answer: this.state.answerText
+            },
+            deck.id
+        );
+        this.props.navigation.goBack();
+    }
+
     render() {
-        let item = {
-            key: "DeckNew",
-            title: "Deck New",
-            question: "QuestionNew",
-            answer: "AnswerNew"
-        };
+        let deck = this.props.navigation.state.params.deck;
 
         return (
             <View style={styles.container}>
@@ -56,16 +66,23 @@ class NewQuestionView extends Component {
                 />
                 <TouchableOpacity
                     style={styles.submitButton}
-                    onPress={() =>
-                        this.props.navigation.navigate("DeckView", {
-                            deck: item
-                        })}
+                    onPress={() => this.submit()}
                 >
                     <Text style={{ color: white }}>SUBMIT</Text>
                 </TouchableOpacity>
             </View>
         );
     }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        addCard: (card, deckId) => dispatch(addCard(card, deckId))
+    };
+}
+
+function mapStateToProps(state) {
+    return {};
 }
 
 const styles = StyleSheet.create({
@@ -87,4 +104,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default NewQuestionView;
+export default connect(mapStateToProps, mapDispatchToProps)(NewQuestionView);

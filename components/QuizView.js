@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { gray, white, red, green } from "../utils/colors";
+import { connect } from "react-redux";
+import { setScore } from "../actions";
 
 class QuizView extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -12,7 +14,8 @@ class QuizView extends Component {
     state = {
         showAnswer: false,
         numberOfQuestions: 0,
-        currentQuestion: 0
+        currentQuestion: 0,
+        score: 0
     };
 
     componentDidMount() {
@@ -20,7 +23,7 @@ class QuizView extends Component {
         let questions = deck.questions;
 
         this.setState({
-            numberOfQuestions: questions.length - 1
+            numberOfQuestions: questions.length
         });
     }
 
@@ -32,8 +35,17 @@ class QuizView extends Component {
         return question;
     }
 
-    onAnswer() {
-        if (this.state.currentQuestion == this.state.numberOfQuestions) {
+    onAnswer(answer) {
+        const { setScore } = this.props;
+        let deck = this.props.navigation.state.params.deck;
+
+        if (answer === "correct") {
+            this.setState({
+                score: this.state.score + 1
+            });
+        }
+        if (this.state.currentQuestion == this.state.numberOfQuestions - 1) {
+            setScore(this.state.score, deck.id);
             alert("End reached");
             return;
         }
@@ -46,8 +58,6 @@ class QuizView extends Component {
 
     render() {
         let deck = this.props.navigation.state.params.deck;
-        console.log(this.state.numberOfQuestions);
-        console.log(this.state.currentQuestion);
 
         return (
             <View style={styles.container}>
@@ -70,18 +80,21 @@ class QuizView extends Component {
                     </Text>
                 </TouchableOpacity>
                 <Text style={{ fontSize: 15 }}>
-                    {this.state.currentQuestion + 1}/{this.state.numberOfQuestions + 1}
+                    {this.state.currentQuestion + 1}/{this.state.numberOfQuestions}
+                </Text>
+                <Text style={{ fontSize: 15 }}>
+                    {this.state.score / this.state.numberOfQuestions * 100} %
                 </Text>
                 <View style={styles.buttonWrapper}>
                     <TouchableOpacity
                         style={styles.correctButton}
-                        onPress={() => this.onAnswer()}
+                        onPress={() => this.onAnswer("correct")}
                     >
                         <Text style={{ color: white }}>CORRECT</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={styles.incorrectButton}
-                        onPress={() => this.onAnswer()}
+                        onPress={() => this.onAnswer("incorrect")}
                     >
                         <Text style={{ color: white }}>INCORRECT</Text>
                     </TouchableOpacity>
@@ -89,6 +102,16 @@ class QuizView extends Component {
             </View>
         );
     }
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        setScore: (score, deckId) => dispatch(setScore(score, deckId))
+    };
+}
+
+function mapStateToProps(state) {
+    return {};
 }
 
 const styles = StyleSheet.create({
@@ -132,4 +155,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default QuizView;
+export default connect(mapStateToProps, mapDispatchToProps)(QuizView);

@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { gray, purple, orange, white } from "../utils/colors";
+import { connect } from "react-redux";
 import _ from "lodash";
 
 class DeckView extends Component {
@@ -13,6 +14,7 @@ class DeckView extends Component {
     };
 
     render() {
+        console.log(this.props.decks);
         let deck = this.props.navigation.state.params.deck;
         const deckSize = _.isEmpty(deck.questions)
             ? "0"
@@ -28,12 +30,19 @@ class DeckView extends Component {
                     <TouchableOpacity
                         style={styles.addCardButton}
                         onPress={() =>
-                            this.props.navigation.navigate("NewQuestionView")}
+                            this.props.navigation.navigate("NewQuestionView", {
+                                deck: deck
+                            })}
                     >
                         <Text style={{ color: white }}>ADD CARD</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.startQuizButton}
+                        key={deckSize}
+                        disabled={deckSize === "0" ? true : false}
+                        style={[
+                            styles.startQuizButton,
+                            deckSize === "0" ? { opacity: 0.3 } : { opacity: 1 }
+                        ]}
                         onPress={() =>
                             this.props.navigation.navigate("QuizView", {
                                 deck: deck
@@ -45,6 +54,12 @@ class DeckView extends Component {
             </View>
         );
     }
+}
+
+function mapStateToProps(state) {
+    return {
+        decks: state.decks
+    };
 }
 
 const styles = StyleSheet.create({
@@ -93,4 +108,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default DeckView;
+export default connect(mapStateToProps)(DeckView);
