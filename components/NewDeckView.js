@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { gray, purple, orange, white } from "../utils/colors";
 import { connect } from "react-redux";
-import { saveDeckTitle } from "../utils/api";
+import { saveDeck } from "../utils/api";
 import { addDeck } from "../actions";
 const uuid = require("uuid/v4");
 
@@ -20,11 +20,16 @@ class NewDeckView extends Component {
 
     submit() {
         const { addDeck } = this.props;
+
+        //save to redux
         addDeck({
-            id: uuid(),
             title: this.state.title,
             questions: []
         });
+
+        //save to asyncstorage
+        saveDeck(this.state.title);
+
         this.setState({
             title: null
         });

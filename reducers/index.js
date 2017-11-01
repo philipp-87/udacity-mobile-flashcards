@@ -1,76 +1,66 @@
 import { RECEIVE_DECKS, ADD_DECK, ADD_CARD, SET_SCORE } from "../actions";
 import _ from "lodash";
-const uuid = require("uuid/v4");
 
 const initialState = {
-    decks: [
-        {
-            id: uuid(),
-            title: "React",
-            questions: [
-                {
-                    question: "What is React?",
-                    answer: "A library for managing user interfaces"
-                },
-                {
-                    question: "Where do you make Ajax requests in React?",
-                    answer: "The componentDidMount lifecycle event"
-                }
-            ]
-        },
-        {
-            id: uuid(),
-            title: "JavaScript",
-            questions: [
-                {
-                    question: "What is a closure?",
-                    answer:
-                        "The combination of a function and the lexical environment within which that function was declared."
-                }
-            ]
-        }
-    ]
+    React: {
+        title: "React",
+        questions: [
+            {
+                question: "What is React?",
+                answer: "A library for managing user interfaces"
+            },
+            {
+                question: "Where do you make Ajax requests in React?",
+                answer: "The componentDidMount lifecycle event"
+            }
+        ]
+    },
+    JavaScript: {
+        title: "JavaScript",
+        questions: [
+            {
+                question: "What is a closure?",
+                answer:
+                    "The combination of a function and the lexical environment within which that function was declared."
+            }
+        ]
+    }
 };
 
 function Flashcards(state = initialState, action) {
     switch (action.type) {
         case RECEIVE_DECKS:
+            console.log(_.assign({}, state, action.decks));
             return {
                 ...state,
-                decks: action.decks
+                action
             };
 
         case ADD_DECK:
             return {
                 ...state,
-                decks: state.decks.concat(action.deck)
+                [action.deck.title]: {
+                    title: action.deck.title,
+                    questions: action.deck.questions
+                }
             };
         case ADD_CARD:
             return {
                 ...state,
-                decks: state.decks.map(deck => {
-                    if (deck.id === action.deckId) {
-                        deck.questions.push(action.card);
-                        return deck;
-                    }
-                    return deck;
-                })
+                [action.deck.title]: {
+                    ...state[action.deck.title],
+                    questions: state[action.deck.title].questions.concat(
+                        action.card
+                    )
+                }
             };
         case SET_SCORE:
             return {
                 ...state,
-                decks: state.decks.map(deck => {
-                    if (deck.id === action.deckId) {
-                        if (_.isUndefined(deck.score)) {
-                            deck["score"] = action.score;
-                            return deck;
-                        } else {
-                            deck.score = action.score;
-                            return deck;
-                        }
-                    }
-                    return deck;
-                })
+                [action.deck.title]: {
+                    ...state[action.deck.title],
+                    score: action.score
+                }
             };
         default:
             return state;

@@ -6,6 +6,7 @@ export const ADD_CARD = "ADD_CARD";
 export const SET_SCORE = "SET_SCORE";
 
 export function receiveDecks(decks) {
+    console.log(decks);
     return {
         type: RECEIVE_DECKS,
         decks
@@ -19,20 +20,18 @@ export function addDeck(deck) {
     };
 }
 
-export function addCard(card, deckId) {
-    console.log(card);
-    console.log(deckId);
+export function addCard(card, deck) {
     return {
         type: ADD_CARD,
         card,
-        deckId
+        deck
     };
 }
 
-export function setScore(score, deckId) {
+export function setScore(score, deck) {
     return {
         type: SET_SCORE,
         score,
-        deckId
+        deck
     };
 }

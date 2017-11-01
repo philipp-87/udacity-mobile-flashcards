@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { gray, white, red, green } from "../utils/colors";
 import { connect } from "react-redux";
 import { setScore } from "../actions";
+import { NavigationActions } from "react-navigation";
 
 class QuizView extends Component {
     static navigationOptions = ({ navigation }) => {
@@ -44,9 +45,17 @@ class QuizView extends Component {
                 score: this.state.score + 1
             });
         }
-        if (this.state.currentQuestion == this.state.numberOfQuestions - 1) {
-            setScore(this.state.score, deck.id);
-            alert("End reached");
+        if (this.state.currentQuestion === this.state.numberOfQuestions - 1) {
+            setTimeout(() => {
+                setScore(this.state.score, deck);
+
+                //Go to homescreen and reset stack
+                const resetAction = NavigationActions.reset({
+                    index: 0,
+                    actions: [NavigationActions.navigate({ routeName: "Home" })]
+                });
+                this.props.navigation.dispatch(resetAction);
+            }, 500);
             return;
         }
         this.setState({
@@ -106,7 +115,7 @@ class QuizView extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        setScore: (score, deckId) => dispatch(setScore(score, deckId))
+        setScore: (score, deck) => dispatch(setScore(score, deck))
     };
 }
 

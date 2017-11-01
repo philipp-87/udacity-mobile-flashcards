@@ -14,8 +14,13 @@ class DeckView extends Component {
     };
 
     render() {
-        console.log(this.props.decks);
         let deck = this.props.navigation.state.params.deck;
+        let newDeck;
+
+        if (this.props.decks[deck.title].title === deck.title) {
+            deck = this.props.decks[deck.title];
+        }
+
         const deckSize = _.isEmpty(deck.questions)
             ? "0"
             : deck.questions.length;
@@ -58,7 +63,7 @@ class DeckView extends Component {
 
 function mapStateToProps(state) {
     return {
-        decks: state.decks
+        decks: state
     };
 }
 

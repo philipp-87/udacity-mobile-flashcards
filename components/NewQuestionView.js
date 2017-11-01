@@ -9,6 +9,8 @@ import {
 import { gray, purple, orange, white } from "../utils/colors";
 import { connect } from "react-redux";
 import { addCard } from "../actions";
+import { addCardToDeck } from "../utils/api";
+const uuid = require("uuid/v4");
 
 class NewQuestionView extends Component {
     state = {
@@ -24,8 +26,13 @@ class NewQuestionView extends Component {
                 question: this.state.questionText,
                 answer: this.state.answerText
             },
-            deck.id
+            deck
         );
+
+        addCardToDeck(deck.title, uuid(), {
+            question: this.state.questionText,
+            answer: this.state.answerText
+        });
         this.props.navigation.goBack();
     }
 
@@ -77,7 +84,7 @@ class NewQuestionView extends Component {
 
 function mapDispatchToProps(dispatch) {
     return {
-        addCard: (card, deckId) => dispatch(addCard(card, deckId))
+        addCard: (card, deck) => dispatch(addCard(card, deck))
     };
 }
 

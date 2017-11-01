@@ -9,6 +9,8 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Entypo } from "@expo/vector-icons";
+import { getDecks } from "../utils/api";
+import { receiveDecks } from "../actions";
 import _ from "lodash";
 import { gray, purple, orange, white } from "../utils/colors";
 
@@ -16,6 +18,13 @@ class DeckListView extends Component {
     state = {
         decks: null
     };
+
+    componentDidMount() {
+        getDecks().then(decksFromAsyncStorage => {
+            console.log(decksFromAsyncStorage);
+            this.props.receiveDecks(decksFromAsyncStorage);
+        });
+    }
 
     getScore(deck) {
         if (_.isUndefined(deck.score)) {
@@ -72,7 +81,13 @@ class DeckListView extends Component {
 
 function mapStateToProps(state) {
     return {
-        decks: state.decks
+        decks: state
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    return {
+        receiveDecks: decks => dispatch(receiveDecks(decks))
     };
 }
 
@@ -116,4 +131,4 @@ const styles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps)(DeckListView);
+export default connect(mapStateToProps, mapDispatchToProps)(DeckListView);
