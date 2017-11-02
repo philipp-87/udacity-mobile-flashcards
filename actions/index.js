@@ -6,7 +6,6 @@ export const ADD_CARD = "ADD_CARD";
 export const SET_SCORE = "SET_SCORE";
 
 export function receiveDecks(decks) {
-    console.log(decks);
     return {
         type: RECEIVE_DECKS,
         decks

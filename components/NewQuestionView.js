@@ -29,7 +29,7 @@ class NewQuestionView extends Component {
             deck
         );
 
-        addCardToDeck(deck.title, uuid(), {
+        addCardToDeck(deck.title, {
             question: this.state.questionText,
             answer: this.state.answerText
         });

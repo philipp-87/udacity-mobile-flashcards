@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import { Entypo } from "@expo/vector-icons";
-import { getDecks } from "../utils/api";
+import { getDecks, clearAll, setDecks } from "../utils/api";
 import { receiveDecks } from "../actions";
 import _ from "lodash";
 import { gray, purple, orange, white } from "../utils/colors";
@@ -20,10 +20,12 @@ class DeckListView extends Component {
     };
 
     componentDidMount() {
-        getDecks().then(decksFromAsyncStorage => {
-            console.log(decksFromAsyncStorage);
-            this.props.receiveDecks(decksFromAsyncStorage);
-        });
+        if (_.isEmpty(this.props.decks)) {
+            getDecks().then(decksFromAsyncStorage => {
+                this.props.receiveDecks(decksFromAsyncStorage);
+            });
+        }
+        return;
     }
 
     getScore(deck) {
@@ -35,7 +37,6 @@ class DeckListView extends Component {
     }
 
     render() {
-        console.log(this.props.decks);
         const { decks } = this.props;
         return (
             <View style={styles.container}>

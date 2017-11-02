@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { gray, white, red, green } from "../utils/colors";
 import { connect } from "react-redux";
 import { setScore } from "../actions";
+import { addScore } from "../utils/api";
 import { NavigationActions } from "react-navigation";
 
 class QuizView extends Component {
@@ -47,7 +48,11 @@ class QuizView extends Component {
         }
         if (this.state.currentQuestion === this.state.numberOfQuestions - 1) {
             setTimeout(() => {
+                //save to redux
                 setScore(this.state.score, deck);
+
+                //save to asyncstorage
+                addScore(deck.title, this.state.score);
 
                 //Go to homescreen and reset stack
                 const resetAction = NavigationActions.reset({
