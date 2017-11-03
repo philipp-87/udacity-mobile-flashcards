@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { gray, white, red, green } from "../utils/colors";
+import { gray, white, red, green, orange } from "../utils/colors";
 import { connect } from "react-redux";
 import { setScore } from "../actions";
 import { addScore } from "../utils/api";
@@ -75,39 +75,69 @@ class QuizView extends Component {
 
         return (
             <View style={styles.container}>
-                <Text style={{ fontSize: 20 }}>
-                    {this.state.showAnswer ? (
-                        this.getQuestion().answer
-                    ) : (
-                        this.getQuestion().question
-                    )}
-                </Text>
-                <TouchableOpacity
-                    style={styles.answerButton}
-                    onPress={() =>
-                        this.setState({
-                            showAnswer: !this.state.showAnswer
-                        })}
-                >
-                    <Text style={{ color: red }}>
-                        {this.state.showAnswer ? "Question" : "Answer"}
-                    </Text>
-                </TouchableOpacity>
-                <Text style={{ fontSize: 15 }}>
-                    {this.state.currentQuestion + 1}/{this.state.numberOfQuestions}
-                </Text>
-                <Text style={{ fontSize: 15 }}>
-                    {this.state.score / this.state.numberOfQuestions * 100} %
-                </Text>
+                <View style={styles.headerContainer}>
+                    <View style={styles.scoreWrapper}>
+                        <Text style={styles.scoreText}>
+                            Score:{" "}
+                            {this.state.score /
+                                this.state.numberOfQuestions *
+                                100}{" "}
+                            %
+                        </Text>
+                    </View>
+                </View>
+                <View style={styles.questionAndAnswerContainer}>
+                    <View
+                        style={{
+                            flex: 0.1,
+                            width: 300,
+                            alignItems: "flex-start",
+                            marginTop: 5,
+                            marginLeft: 10
+                        }}
+                    >
+                        <Text style={styles.currentQuestionText}>
+                            {this.state.currentQuestion + 1} /{" "}
+                            {this.state.numberOfQuestions}
+                        </Text>
+                    </View>
+                    <View
+                        style={{
+                            flex: 1,
+                            justifyContent: "center",
+                            alignItems: "center"
+                        }}
+                    >
+                        <Text style={styles.questionText}>
+                            {this.state.showAnswer ? (
+                                this.getQuestion().answer
+                            ) : (
+                                this.getQuestion().question
+                            )}
+                        </Text>
+                    </View>
+                    <TouchableOpacity
+                        style={styles.answerButtonContainer}
+                        onPress={() =>
+                            this.setState({
+                                showAnswer: !this.state.showAnswer
+                            })}
+                    >
+                        <Text style={{ color: red }}>
+                            {this.state.showAnswer ? "Question" : "Answer"}
+                        </Text>
+                    </TouchableOpacity>
+                </View>
+
                 <View style={styles.buttonWrapper}>
                     <TouchableOpacity
-                        style={styles.correctButton}
+                        style={styles.button}
                         onPress={() => this.onAnswer("correct")}
                     >
                         <Text style={{ color: white }}>CORRECT</Text>
                     </TouchableOpacity>
                     <TouchableOpacity
-                        style={styles.incorrectButton}
+                        style={[styles.button, { backgroundColor: red }]}
                         onPress={() => this.onAnswer("incorrect")}
                     >
                         <Text style={{ color: white }}>INCORRECT</Text>
@@ -131,20 +161,37 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
         alignItems: "center",
-        justifyContent: "center"
+        justifyContent: "space-between"
     },
-    answerButton: {
+    headerContainer: {
+        flex: 0.2,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "center",
+        width: 300
+    },
+    questionAndAnswerContainer: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: white,
+        width: 300,
+        borderColor: gray,
+        borderWidth: 1,
+        borderRadius: 5
+    },
+    answerButtonContainer: {
+        flex: 0.2,
         padding: 10,
         borderRadius: 7,
         height: 45,
-        width: 200,
+        width: 300,
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 20
+        marginBottom: 20
     },
-    correctButton: {
+    button: {
         backgroundColor: green,
         padding: 10,
         borderRadius: 7,
@@ -152,20 +199,35 @@ const styles = StyleSheet.create({
         width: 200,
         alignItems: "center",
         justifyContent: "center",
-        marginTop: 20
+        marginBottom: 20
     },
-    incorrectButton: {
-        backgroundColor: red,
-        padding: 10,
-        borderRadius: 7,
-        height: 45,
-        width: 200,
-        alignItems: "center",
-        justifyContent: "center",
-        marginTop: 20
+    questionText: {
+        fontSize: 20,
+        textAlign: "center",
+        fontWeight: "bold"
+    },
+    currentQuestionText: {
+        fontSize: 15,
+        flex: 1,
+        fontWeight: "bold"
+    },
+    scoreText: {
+        fontSize: 15,
+        fontWeight: "bold"
     },
     buttonWrapper: {
         marginTop: 40
+    },
+    scoreWrapper: {
+        height: 50,
+        width: 150,
+        flexDirection: "column",
+        alignSelf: "center",
+        alignItems: "center",
+        justifyContent: "center",
+        marginRight: 10,
+        backgroundColor: orange,
+        borderRadius: 50
     }
 });
 

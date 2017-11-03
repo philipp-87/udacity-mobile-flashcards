@@ -13,11 +13,16 @@ import QuizView from "./components/QuizView";
 import logger from "redux-logger";
 import { composeWithDevTools } from "redux-devtools-extension";
 import promise from "redux-promise-middleware";
+import { setNotification, clearNotification } from "./utils/notifications";
 
 const middleware = applyMiddleware(promise(), logger);
 const store = createStore(reducer, composeWithDevTools(middleware));
 
 export default class App extends React.Component {
+    componentDidMount() {
+        clearNotification();
+        setNotification();
+    }
     render() {
         return (
             <Provider store={store}>

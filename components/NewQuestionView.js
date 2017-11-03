@@ -13,6 +13,12 @@ import { addCardToDeck } from "../utils/api";
 const uuid = require("uuid/v4");
 
 class NewQuestionView extends Component {
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: "New Card"
+        };
+    };
+
     state = {
         questionText: null,
         answerText: null
@@ -41,7 +47,7 @@ class NewQuestionView extends Component {
 
         return (
             <View style={styles.container}>
-                <Text style={{ fontSize: 20 }}>
+                <Text style={{ fontSize: 15, textAlign: "center" }}>
                     Enter a question and answer for the new card
                 </Text>
                 <TextInput
@@ -51,12 +57,12 @@ class NewQuestionView extends Component {
                         borderColor: "gray",
                         borderWidth: 1,
                         padding: 5,
-                        marginTop: 20
+                        marginTop: 50
                     }}
                     onChangeText={questionText =>
                         this.setState({ questionText })}
                     value={this.state.questionText}
-                    placeholder={"e.g. Do you like react native"}
+                    placeholder={"Question"}
                 />
                 <TextInput
                     style={{
@@ -69,7 +75,7 @@ class NewQuestionView extends Component {
                     }}
                     onChangeText={answerText => this.setState({ answerText })}
                     value={this.state.answerText}
-                    placeholder={"e.g. OMG, i love it!"}
+                    placeholder={"Answer"}
                 />
                 <TouchableOpacity
                     style={styles.submitButton}

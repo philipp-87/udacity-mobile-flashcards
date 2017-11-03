@@ -12,7 +12,7 @@ import { Entypo } from "@expo/vector-icons";
 import { getDecks, clearAll, setDecks } from "../utils/api";
 import { receiveDecks } from "../actions";
 import _ from "lodash";
-import { gray, purple, orange, white } from "../utils/colors";
+import { gray, purple, orange, white, green } from "../utils/colors";
 
 class DeckListView extends Component {
     state = {
@@ -38,6 +38,15 @@ class DeckListView extends Component {
 
     render() {
         const { decks } = this.props;
+        if (_.isEmpty(decks)) {
+            return (
+                <View style={styles.textWrapper}>
+                    <Text style={{ fontSize: 15, fontWeight: "bold" }}>
+                        NO DECKS. PLEASE ADD A DECK!
+                    </Text>
+                </View>
+            );
+        }
         return (
             <View style={styles.container}>
                 <ScrollView>
@@ -55,7 +64,7 @@ class DeckListView extends Component {
                                         deck: deck
                                     })}
                             >
-                                <View style={styles.iconWrapper} />
+                                <View style={styles.placeholderWrapper} />
                                 <View style={styles.textWrapper}>
                                     <Text style={{ fontSize: 30 }}>
                                         {deck.title}
@@ -63,8 +72,17 @@ class DeckListView extends Component {
                                     <Text>{deckSize} cards</Text>
                                 </View>
                                 <View style={styles.iconWrapper}>
-                                    <View style={styles.scoreWrapper}>
-                                        <Text>{this.getScore(deck)}</Text>
+                                    <View
+                                        style={[
+                                            styles.scoreWrapper,
+                                            _.isUndefined(deck.score)
+                                                ? { backgroundColor: green }
+                                                : { backgroundColor: orange }
+                                        ]}
+                                    >
+                                        <Text style={{ fontWeight: "bold" }}>
+                                            {this.getScore(deck)}
+                                        </Text>
                                     </View>
                                     <Entypo
                                         name="chevron-small-right"
@@ -94,8 +112,7 @@ function mapDispatchToProps(dispatch) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: "#fff"
+        flex: 1
     },
     itemContainer: {
         flex: 1,
@@ -109,7 +126,7 @@ const styles = StyleSheet.create({
     },
     textWrapper: {
         flex: 2,
-        alignItems: "center",
+        alignItems: "flex-start",
         justifyContent: "center"
     },
     iconWrapper: {
@@ -118,6 +135,9 @@ const styles = StyleSheet.create({
         alignItems: "flex-end",
         justifyContent: "flex-end",
         marginRight: 10
+    },
+    placeholderWrapper: {
+        flex: 0.5
     },
     scoreWrapper: {
         height: 50,

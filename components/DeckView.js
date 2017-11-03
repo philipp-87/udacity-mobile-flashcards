@@ -70,7 +70,6 @@ function mapStateToProps(state) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "center"
     },
@@ -78,7 +77,7 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 300,
         margin: 20,
-        backgroundColor: "#fff",
+        backgroundColor: white,
         alignItems: "center",
         justifyContent: "center",
         borderColor: gray,
@@ -88,7 +87,6 @@ const styles = StyleSheet.create({
     buttonWrapper: {
         flex: 0.5,
         width: 300,
-        backgroundColor: "#fff",
         alignItems: "center",
         justifyContent: "flex-start"
     },
