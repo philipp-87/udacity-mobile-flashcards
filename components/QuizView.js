@@ -50,13 +50,15 @@ class QuizView extends Component {
         return question;
     }
 
-    backToDecks() {
+    backToDeck() {
         //Go to homescreen and reset stack
-        const resetAction = NavigationActions.reset({
-            index: 0,
-            actions: [NavigationActions.navigate({ routeName: "Home" })]
-        });
-        this.props.navigation.dispatch(resetAction);
+        // const resetAction = NavigationActions.reset({
+        //     index: 0,
+        //     actions: [NavigationActions.navigate({ routeName: "Home" })]
+        // });
+        // this.props.navigation.dispatch(resetAction);
+
+        this.props.navigation.goBack();
     }
 
     onAnswer(answer) {
@@ -135,9 +137,9 @@ class QuizView extends Component {
                     </TouchableOpacity>
                     <TouchableOpacity
                         style={[styles.button, { backgroundColor: purple }]}
-                        onPress={() => this.backToDecks()}
+                        onPress={() => this.backToDeck()}
                     >
-                        <Text style={{ color: white }}>BACK TO DECKS</Text>
+                        <Text style={{ color: white }}>BACK TO DECK</Text>
                     </TouchableOpacity>
                 </View>
             </View>
