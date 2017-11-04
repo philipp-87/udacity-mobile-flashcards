@@ -21,11 +21,13 @@ class NewDeckView extends Component {
     submit() {
         const { addDeck } = this.props;
 
-        //save to redux
-        addDeck({
+        let deck = {
             title: this.state.title,
             questions: []
-        });
+        };
+
+        //save to redux
+        addDeck(deck);
 
         //save to asyncstorage
         saveDeck(this.state.title);
@@ -33,7 +35,9 @@ class NewDeckView extends Component {
         this.setState({
             title: null
         });
-        this.props.navigation.goBack();
+        this.props.navigation.navigate("DeckView", {
+            deck: deck
+        });
     }
 
     render() {

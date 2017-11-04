@@ -15,7 +15,6 @@ export function getDecks() {
 
 export function setDecks() {
     let decks = getInitialState();
-    console.log(decks);
     return AsyncStorage.getItem(FLASHCARDS_STORAGE_KEY).then(decks =>
         JSON.parse(decks)
     );
@@ -57,7 +56,6 @@ export function addScore(title, score) {
         .then(item => {
             let newItem = JSON.parse(item);
             newItem[title]["score"] = score;
-            console.log(newItem);
             return newItem;
         })
         .then(newItem =>

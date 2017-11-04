@@ -40,7 +40,7 @@ class DeckListView extends Component {
         const { decks } = this.props;
         if (_.isEmpty(decks)) {
             return (
-                <View style={styles.textWrapper}>
+                <View style={[styles.textWrapper, { alignItems: "center" }]}>
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>
                         NO DECKS. PLEASE ADD A DECK!
                     </Text>
